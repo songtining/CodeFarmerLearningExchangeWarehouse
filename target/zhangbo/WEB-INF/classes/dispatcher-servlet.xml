@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!-- zb: 加载注解驱动，并防止resoponsebody注解中文乱码 -->
+    <mvc:annotation-driven>
+        <mvc:message-converters register-defaults="false">
+            <!-- 将StringHttpMessageConverter的默认编码设为UTF-8 -->
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="writeAcceptCharset" value="false"/>
+                <constructor-arg value="UTF-8"/>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    <!-- zb: 配置控制器扫描包路径 -->
+    <context:component-scan base-package="com.etoak.controller"/>
+    <!-- zb: 静态资源采用默认处理 -->
+    <mvc:default-servlet-handler/>
+    <!-- zb: 使用spring servlet3.0 默认上传 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+    <!-- zb: 启用aop切面代理 -->
+    <aop:aspectj-autoproxy expose-proxy="true" proxy-target-class="true"/>
+
+
+    <!-- zb: 配置view视图页面 前缀和后缀 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/"></property>
+        <property name="suffix" value=".html"></property>
+    </bean>
+   <mvc:resources location="/WEB-INF/static/" mapping="/static/**"/>
+    <mvc:resources location="/WEB-INF/views/" mapping="/views/**"/>
+</beans>

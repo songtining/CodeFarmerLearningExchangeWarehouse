@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+<!-- 
+	实例类起别名
+ -->
+<typeAliases>
+	<!-- 
+		通过包结构扫描实体类 别名默认为类名首字母小写
+		例如User：user
+		扫描包结构不能使用通配符 例如*，**
+	 -->
+	<package name="com.etoak.pojo"/>
+</typeAliases>
+
+<!-- 
+	分页插件PageHelper
+ -->
+<plugins>
+	<plugin interceptor="com.github.pagehelper.PageHelper">
+		<property name="dialect" value="mysql"/>
+	</plugin>
+</plugins>
+
+<!-- 
+	扫描mybatis sql xml配置文件
+ -->
+<!--<mappers>
+	&lt;!&ndash;
+		扫描xml配置
+		1.接口名称和xml文件名称必须一致
+		2.接口和xml必须在同一目录
+	 &ndash;&gt;
+	<package name="com.etoak.mapper"/>
+</mappers>-->
+
+</configuration>

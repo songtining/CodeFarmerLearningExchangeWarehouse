@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+    <!--<context:property-placeholder location="jdbc.properties"/>-->
+    <!--配置数据源-->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/etoak"/>
+        <property name="username" value="root"/>
+        <property name="password" value="152854"/>
+    </bean>
+    <!--配置mybatis工厂-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--配置数据源-->
+        <property name="dataSource" ref="dataSource"></property>
+        <property name="mapperLocations" value="classpath*:com/etoak/mapper/*Mapper.xml"></property>
+        <property name="configLocation" value="classpath:mybatis.cfg.xml"></property>
+    </bean>
+    <!--
+ 		3.扫描接口并实例化接口  接口是可以new对象的  是在匿名内部类中使用
+ 		sqlSessionFactoryBeanName等价sqlSessionFactory
+ 		Session session = sqlSessionFactory.openSession();
+ 		session.getMapper(接口名称.class);
+
+ 		MapperScannerConfigurer等价于getMapper(接口名称.class)
+ 		接口名称 接口引用 = getMapper(接口名称.class)
+ 		接口引用.方法（）
+ 	 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- MapperFactoryBean的出现为了代替手工使用SqlSessionDaoSupport或SqlSessionTemplate编写数据访问对象(DAO)的代码,使用动态代理实现。 -->
+        <property name="basePackage" value="com.etoak.dao"></property>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+    </bean>
+    <!--
+         3.配置事务管理器
+      -->
+    <bean id="tx" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+    <!--
+     4.使用注解式事务
+  -->
+    <tx:annotation-driven transaction-manager="tx"/>
+</beans>

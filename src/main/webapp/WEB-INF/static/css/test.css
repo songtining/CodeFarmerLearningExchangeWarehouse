@@ -1,0 +1,26 @@
+#search_div {
+    padding: 10px 30px;
+}
+
+.search_input {
+    width: 22%;
+    display: inline-table;
+}
+
+#search_btn_div {
+    display: -webkit-inline-box;
+    position: absolute;
+    margin-left: 40px;
+}
+
+#myTabDiv{
+    padding: 10px 30px;
+}
+
+.fixed-table-pagination{
+    display: flex;
+}
+
+.fixed-table-pagination .float-right{
+    margin-left: 50.7%;
+}
